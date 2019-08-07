@@ -1374,6 +1374,7 @@ SCHEMAS = {
             "description": "Employment information, similar to educational "
                            "information.",
             "required": False,
+            "type": "list",
             "schema": {
                 "type": "dict",
                 "schema": {
@@ -1406,7 +1407,6 @@ SCHEMAS = {
                         "visitor-supported",
                         "visitor-unsupported"],
                     },
-                    "type": "list",
                 },
             },
         },
