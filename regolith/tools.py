@@ -13,6 +13,8 @@ from datetime import datetime, date
 
 from regolith.dates import month_to_int, date_to_float
 from regolith.sorters import doc_date_key, id_key, ene_date_key, date_key
+from regolith.chained_db import ChainDB
+
 
 try:
     from bibtexparser.bwriter import BibTexWriter
