@@ -244,8 +244,9 @@ def filter_publications(citations, authors, reverse=False, bold=True):
     pubs = []
     for pub in citations:
         if (
-            len((set(pub.get("author", [])) | set(pub.get("editor", []))) & authors)
-            == 0
+                len((set(pub.get("author", [])) | set(
+                    pub.get("editor", []))) & authors)
+                == 0
         ):
             continue
         pub = deepcopy(pub)
@@ -361,7 +362,8 @@ def awards_grants_honors(p):
         d = {"description": latex_safe(x["name"])}
         if "year" in x:
             d.update(
-                {"year": x["year"], "_key": date_to_float(x["year"], x.get("month", 0))}
+                {"year": x["year"],
+                 "_key": date_to_float(x["year"], x.get("month", 0))}
             )
         elif "begin_year" in x and "end_year" in x:
             d.update(
@@ -412,16 +414,16 @@ def latex_safe(s, url_check=True, wrapper="url"):
         if url_search:
             url = r"{start}\{wrapper}{{{s}}}{end}".format(
                 start=(latex_safe(s[: url_search.start()])),
-                end=(latex_safe(s[url_search.end() :])),
+                end=(latex_safe(s[url_search.end():])),
                 wrapper=wrapper,
-                s=latex_safe_url(s[url_search.start() : url_search.end()]),
+                s=latex_safe_url(s[url_search.start(): url_search.end()]),
             )
             return url
     return (
         s.replace("&", r"\&")
-        .replace("$", r"\$")
-        .replace("#", r"\#")
-        .replace("_", r"\_")
+            .replace("$", r"\$")
+            .replace("#", r"\#")
+            .replace("_", r"\_")
     )
 
 
@@ -524,7 +526,8 @@ def fuzzy_retrieval(documents, sources, value, case_sensitive=True):
                 ret = [ret]
             returns.extend(ret)
         if not case_sensitive:
-            returns = [reti.lower() for reti in returns if isinstance(reti, str)]
+            returns = [reti.lower() for reti in returns if
+                       isinstance(reti, str)]
             if isinstance(value, str):
                 if value.lower() in frozenset(returns):
                     return doc
@@ -575,8 +578,41 @@ def dereference_institution(input_record, institutions):
             state_country = db_inst.get("state")
         else:
             state_country = db_inst.get("country")
-        input_record["location"] = "{}, {}".format(db_inst["city"], state_country)
+        input_record["location"] = "{}, {}".format(db_inst["city"],
+                                                   state_country)
         if "department" in input_record:
             input_record["department"] = fuzzy_retrieval(
-                [db_inst["departments"]], ["name", "aka"], input_record["department"]
+                [db_inst["departments"]], ["name", "aka"],
+                input_record["department"]
             )
+
+
+def get_dates(thing):
+    '''
+    given a dict like thing, return the items
+
+    Parameters
+    ----------
+    thing: dict
+      the dict that contains the dates
+
+    Returns
+    -------
+       dict containing begin day, begin month, begin year, end day, end month, end year
+    '''
+    dateitems = ['begin_day', 'begin_month', 'begin_year', 'end_day',
+                 'end_month',
+                 'end_year', 'day', 'month', 'year']
+    dates = [thing.get(item) for item in dateitems]
+    dateout = {}
+    [dateout.update({item: date}) for item, date in zip(dateitems, dates) if
+     date]
+    print(dateout)
+    return dateout
+
+
+if __name__ == "__main__":
+    test = get_dates(
+        {'begin_day': 1, 'begin_month': 1, 'begin_year': 2000, 'end_day': 1,
+         'end_month': 1,
+         'end_year': 2001, 'month': 1, 'year': 2003})
