@@ -1058,8 +1058,6 @@ def dereference_institution(input_record, institutions):
                 input_record["department"]
             )
 
-
-
 def get_dates(thing):
     '''
     given a dict like thing, return all the date items
@@ -1126,10 +1124,3 @@ def merge_collections(a, b, target_id):
         chained[k] = ChainDB(adict[k],
                              bdict[v])
     return list(chained.values())
-
-
-if __name__ == "__main__":
-    test = get_dates(
-        {'begin_day': 1, 'begin_month': 1, 'begin_year': 2000, 'end_day': 1,
-         'end_month': 1,
-         'end_year': 2001, 'month': 1, 'year': 2003})
